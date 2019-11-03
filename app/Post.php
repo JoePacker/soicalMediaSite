@@ -14,4 +14,21 @@ class Post extends Model
     protected $fillable = [
         'title', 'image', 'body',
     ];
+
+    /**
+     * Get the comments for the post.
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    
+    /**
+     * Get the user that owns the post.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
