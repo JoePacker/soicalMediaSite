@@ -1,9 +1,10 @@
 <?php
 
+use App\Post;
 use App\User;
 use Illuminate\Database\Seeder;
 
-class PostsTableSeeder extends Seeder
+class CommentsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,9 +13,12 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Post::class, 15)->create([
+        factory(App\Comment::class, 50)->create([
             'user_id' => function () {
                 return User::all()->random()->id;
+            },
+            'post_id' => function () {
+                return Post::all()->random()->id;
             },
         ]);
     }
