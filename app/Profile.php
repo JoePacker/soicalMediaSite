@@ -14,4 +14,12 @@ class Profile extends Model
     protected $fillable = [
         'image',
     ];
+
+    /**
+     * Get the user that owns the profile.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
