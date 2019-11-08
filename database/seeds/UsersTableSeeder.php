@@ -3,6 +3,7 @@
 use App\Role;
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,16 +15,11 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $user = new User;
-        $user->role_id = 1;
         $user->name = 'Joe Packer';
         $user->email = 'joepacker@email.com';
-        $user->password = bcrypt('password');
+        $user->password = Hash::make('password');
         $user->save();
 
-        factory(User::class, 5)->create([
-            'role_id' => function () {
-                return Role::where('name', 'member')->first()->id;
-            },
-        ]);
+        factory(User::class, 5)->create();
     }
 }
