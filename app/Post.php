@@ -23,7 +23,6 @@ class Post extends Model
         return $this->hasMany('App\Comment');
     }
 
-    
     /**
      * Get the user that owns the post.
      */
