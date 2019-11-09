@@ -17,7 +17,7 @@ class PostsTableSeeder extends Seeder
         $post->user_id = 1;
         $post->title = 'This is an awesome post';
         $post->image = 'https://lorempixel.com/720/480/?12345';
-        $post->body = 'This is the body of my post. It contains all the information about the post and should be read by everyone.';
+        $post->body = 'The body contains all the information about the post and should be read by everyone.';
         $post->save();
 
         factory(Post::class, 15)->create([
