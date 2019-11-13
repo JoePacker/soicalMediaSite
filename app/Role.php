@@ -20,7 +20,7 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->hasMany('App\User');
+        return $this->belongsToMany('App\User');
     }
 
     /**
@@ -29,5 +29,13 @@ class Role extends Model
     public function permissions()
     {
         return $this->belongsToMany('App\Permission');
+    }
+
+    /**
+     * todo: add comment.
+     */
+    public function givePermissionTo(Permission $permission)
+    {
+        return $this->permissions()->save($permission);
     }
 }

@@ -38,19 +38,19 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the role associated with the user.
-     */
-    public function role()
-    {
-        return $this->belongsTo('App\Role');
-    }
-
-    /**
      * Get the profile associated with the user.
      */
     public function profile()
     {
         return $this->hasOne('App\Profile');
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
     }
 
     /**
@@ -67,5 +67,27 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+
+    /**
+     * todo: add comment.
+     */
+    public function hasRole($role)
+    {
+        if (is_string($role)) {
+            return $this->roles()->contains('name', $role);
+        }
+
+        return !! $role->intersect($this->roles)->count();
+    }
+
+    /**
+     * todo: add comment.
+     */
+    public function assignRole($role)
+    {
+        return $this->roles()->save(
+           Role::whereName($role)->firstOrFail()
+        );
     }
 }
