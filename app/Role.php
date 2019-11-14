@@ -34,8 +34,10 @@ class Role extends Model
     /**
      * todo: add comment.
      */
-    public function givePermissionTo(Permission $permission)
+    public function givePermissionTo($permission)
     {
-        return $this->permissions()->save($permission);
+        return $this->permissions()->save(
+            Permission::whereName($permission)->firstOrFail()
+        );
     }
 }

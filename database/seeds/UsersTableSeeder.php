@@ -19,6 +19,14 @@ class UsersTableSeeder extends Seeder
         $user->password = bcrypt('password');
         $user->save();
 
-        factory(User::class, 5)->create();
+        $user->assignRole('admin');
+
+        factory(User::class, 5)->create()->each(function ($user) {
+            $user->assignRole('member');
+
+            if ($user->id % 5 == 0) {
+                $user->assignRole('moderator');
+            }
+        });
     }
 }
