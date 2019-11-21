@@ -16,6 +16,13 @@ class Comment extends Model
     ];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['user'];
+
+    /**
      * Get the post that owns the comment.
      */
     public function post()

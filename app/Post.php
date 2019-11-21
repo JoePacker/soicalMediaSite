@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -23,12 +24,23 @@ class Post extends Model
         return $this->hasMany('App\Comment');
     }
 
-    
+
     /**
      * Get the user that owns the post.
      */
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Get the formatted post creation date.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('j F Y');
     }
 }
