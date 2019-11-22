@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
 use App\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource('App\Post', 'post');
+    }
+
     /**
      * Display a listing of the resource.
      *
