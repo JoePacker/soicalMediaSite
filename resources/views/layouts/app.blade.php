@@ -38,6 +38,12 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        @can('create', 'App\Post')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('posts.create') }}">Create Post</a>
+                            </li>
+                        @endcan
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

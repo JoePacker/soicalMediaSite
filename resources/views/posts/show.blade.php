@@ -12,12 +12,17 @@
 
                 <h1>{{ $post->title }}</h1>
                 <p>{{ $post->user->name }} {{ $post->created_at }}</p>
+
+                @isset($post->image)
+                    <img class="img-fluid" src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+                @endisset
+
                 <p>{{ $post->body }}</p>
 
                 <h2>Comments</h2>
                 @forelse ($post->comments as $comment)
                     <div class="card">
-                        <div class="card-header">{{ $comment->user->name }}</div>
+                        <div class="card-header">{{ $comment->user->name }} {{ $comment->created_at }}</div>
 
                         <div class="card-body">
                             <p>{{ $comment->body }}</p>

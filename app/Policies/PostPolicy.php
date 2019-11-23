@@ -11,26 +11,17 @@ class PostPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any posts.
+     * Determine whether the user can bypass authorisation.
      *
      * @param  \App\User  $user
+     * @param  string  $ability
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function before($user, $ability)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the post.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
-     * @return mixed
-     */
-    public function view(User $user, Post $post)
-    {
-        //
+        if ($user->hasRole('admin')) {
+            return true;
+        }
     }
 
     /**
@@ -41,7 +32,9 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        if ($user->hasPermission('create_post')) {
+            return true;
+        }
     }
 
     /**
@@ -53,7 +46,13 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        //
+        if ($user->hasPermission('edit_any_post')) {
+            return true;
+        }
+
+        if ($user->hasPermission('edit_own_post') && $user->id === $post->user_id) {
+            return true;
+        }
     }
 
     /**
@@ -65,30 +64,12 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
-    }
+        if ($user->hasPermission('delete_any_post')) {
+            return true;
+        }
 
-    /**
-     * Determine whether the user can restore the post.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
-     * @return mixed
-     */
-    public function restore(User $user, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the post.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
-     * @return mixed
-     */
-    public function forceDelete(User $user, Post $post)
-    {
-        //
+        if ($user->hasPermission('delete_own_post') && $user->id === $post->user_id) {
+            return true;
+        }
     }
 }

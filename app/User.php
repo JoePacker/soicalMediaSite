@@ -90,4 +90,16 @@ class User extends Authenticatable
            Role::whereName($role)->firstOrFail()
         );
     }
+
+    /**
+     * todo: add comment.
+     */
+    public function hasPermission($permission)
+    {
+        if (is_string($permission)) {
+            $permission = Permission::whereName($permission)->firstOrFail();
+        }
+
+        return $this->hasRole($permission->roles);
+    }
 }
