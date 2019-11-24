@@ -40,6 +40,6 @@ class Post extends Model
      */
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('j F Y');
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('j F Y H:i');
     }
 }

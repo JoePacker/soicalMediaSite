@@ -22,7 +22,10 @@
                 <h2>Comments</h2>
                 @forelse ($post->comments as $comment)
                     <div class="card">
-                        <div class="card-header">{{ $comment->user->name }} {{ $comment->created_at }}</div>
+                        <div class="card-header">
+                            <a href="{{ route('profile.show', ['profile' => $comment->user->profile]) }}">{{ $comment->user->name }}</a>
+                            <span>{{ $comment->created_at }}</span>
+                        </div>
 
                         <div class="card-body">
                             <p>{{ $comment->body }}</p>

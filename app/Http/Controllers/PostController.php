@@ -48,17 +48,16 @@ class PostController extends Controller
         ]);
 
         $post = new Post;
-        $post->user_id = $request->user()->id;
         $post->title = $request->title;
         $post->body = $request->body;
 
         if ($request->hasFile('image')) {
-            $post->image = $request->file('image')->store('images', 'public');
+            $post->image = $request->file('image')->store('images/posts', 'public');
         }
 
-        $post->save();
+        $request->user()->posts()->save($post);
 
-        return redirect()->route('posts.show', ['post' => $post->id])->with('status', 'A post was successfully created');
+        return redirect()->route('posts.show', ['post' => $post])->with('status', 'A post was successfully created');
     }
 
     /**

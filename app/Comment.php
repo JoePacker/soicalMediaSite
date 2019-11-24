@@ -21,7 +21,7 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $with = ['user'];
+    protected $with = ['user', 'user.profile'];
 
     /**
      * Get the post that owns the comment.
@@ -47,6 +47,6 @@ class Comment extends Model
      */
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('j F Y H:i');
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->diffForHumans();
     }
 }
