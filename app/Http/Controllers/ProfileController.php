@@ -23,9 +23,12 @@ class ProfileController extends Controller
      *
      * @param  \App\Profile  $profile
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Profile $profile)
     {
+        $this->authorize('update', $profile);
+
         return view('profile.edit', ['profile' => $profile]);
     }
 
@@ -35,9 +38,12 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Profile  $profile
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Profile $profile)
     {
+        $this->authorize('update', $profile);
+
         $request->validate([
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);

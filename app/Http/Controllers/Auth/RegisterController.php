@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Profile;
+use App\Role;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +65,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        $memberRole = Role::whereName('member')->firstOrFail();
+
+        $user->roles()->save($memberRole);
         $user->profile()->save(new Profile());
 
         return $user;

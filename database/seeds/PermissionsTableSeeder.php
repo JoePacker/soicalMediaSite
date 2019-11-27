@@ -62,6 +62,16 @@ class PermissionsTableSeeder extends Seeder
         $deleteAnyCommentPermission->label = 'Delete any comment';
         $deleteAnyCommentPermission->save();
 
+        $editOwnProfilePermission = new Permission();
+        $editOwnProfilePermission->name = 'edit_own_profile';
+        $editOwnProfilePermission->label = 'Edit own profile';
+        $editOwnProfilePermission->save();
+
+        $editAnyProfilePermission = new Permission();
+        $editAnyProfilePermission->name = 'edit_any_profile';
+        $editAnyProfilePermission->label = 'Edit any profile';
+        $editAnyProfilePermission->save();
+
         $deleteUserPermission = new Permission();
         $deleteUserPermission->name = 'delete_user';
         $deleteUserPermission->label = 'Delete a user';

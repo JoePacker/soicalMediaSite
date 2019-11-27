@@ -31,6 +31,7 @@ class RolesTableSeeder extends Seeder
 
         $moderatorRole->givePermissionTo('edit_any_post');
         $moderatorRole->givePermissionTo('delete_any_post');
+        $moderatorRole->givePermissionTo('edit_any_profile');
 
         $memberRole = new Role;
         $memberRole->name = 'member';
@@ -43,5 +44,6 @@ class RolesTableSeeder extends Seeder
         $memberRole->givePermissionTo('create_comment');
         $memberRole->givePermissionTo('edit_own_comment');
         $memberRole->givePermissionTo('delete_own_comment');
+        $memberRole->givePermissionTo('edit_own_profile');
     }
 }

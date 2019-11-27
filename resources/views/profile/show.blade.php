@@ -12,13 +12,17 @@
 
                 <h1>{{ $profile->user->name }}</h1>
 
-                @isset($profile->image)
-                    <img class="img-fluid" src="{{ asset($profile->image) }}" alt="{{ $profile->user->name }}">
-                @endisset
+                <img class="img-fluid" src="{{ asset($profile->image) }}" alt="{{ $profile->user->name }}">
 
                 @isset($profile->bio)
                     <p>{{ $profile->bio }}</p>
                 @endisset
+
+                @can('update', $profile)
+                    <div>
+                        <a href="{{ route('profile.edit', ['profile' => $profile]) }}" class="btn btn-primary">Edit profile</a>
+                    </div>
+                @endcan
             </div>
         </div>
     </div>

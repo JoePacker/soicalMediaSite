@@ -33,17 +33,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('posts.index') }}">View posts</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        @can('create', 'App\Post')
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('posts.create') }}">Create Post</a>
-                            </li>
-                        @endcan
-
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -57,11 +53,12 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img class="rounded-circle" src="{{ asset(Auth::user()->profile->image) }}" alt="{{ Auth::user()->name }}">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('profile.show', ['profile' => Auth::user()->profile]) }}">View Profile</a>
+                                    <a class="dropdown-item" href="{{ route('profile.show', ['profile' => Auth::user()->profile]) }}">View profile</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

@@ -11,7 +11,11 @@
                 @endif
 
                 <h1>{{ $post->title }}</h1>
-                <p>{{ $post->user->name }} {{ $post->created_at }}</p>
+
+                <div>
+                    <a href="{{ route('profile.show', ['profile' => $post->user->profile]) }}">{{ $post->user->name }}</a>
+                    <span>{{ $post->created_at }}</span>
+                </div>
 
                 @isset($post->image)
                     <img class="img-fluid" src="{{ asset($post->image) }}" alt="{{ $post->title }}">
