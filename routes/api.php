@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('comments', 'CommentController')->only([
+    'update', 'destroy',
+]);
+
+Route::get('/posts/{post}/comments', 'CommentController@index');
+
+Route::post('/posts/{post}/comments', 'CommentController@store');
