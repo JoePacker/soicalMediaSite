@@ -38,6 +38,8 @@
                 @empty
                     <p>There are no comments to display</p>
                 @endforelse
+
+                    <comments :post="{{ $post }}"></comments>
             </div>
         </div>
     </div>
