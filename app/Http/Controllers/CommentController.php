@@ -30,11 +30,11 @@ class CommentController extends Controller
     {
         $comment = new Comment();
         $comment->user_id = $request->user()->id;
-        $comment->body = $request->body;
+        $comment->body = $request->comment;
 
         $post->comments()->save($comment);
 
-        return $comment;
+        return $post;
     }
 
     /**

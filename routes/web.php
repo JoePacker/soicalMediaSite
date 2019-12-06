@@ -24,7 +24,3 @@ Route::resource('profile', 'ProfileController')->only([
 ]);
 
 Route::resource('posts', 'PostController');
-
-Route::resource('comments', 'CommentController')->only([
-    'create', 'store', 'destroy',
-]);
