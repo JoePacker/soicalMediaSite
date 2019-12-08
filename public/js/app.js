@@ -1861,11 +1861,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: {
       type: Object,
       required: true
+    },
+    user: {
+      type: Object
     }
   },
   data: function data() {
@@ -1882,11 +1887,10 @@ __webpack_require__.r(__webpack_exports__);
       axios.post(route('comments.store', {
         post: this.post
       }), {
-        comment: this.comment
+        comment: this.comment,
+        user: this.user.id
       }).then(function (response) {
         _this.comments.push(response.data);
-
-        console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -1895,12 +1899,10 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
-    console.log(this.post);
     axios.get(route('comments.index', {
-      post: this.post.id
+      post: this.post
     })).then(function (response) {
       _this2.comments = response.data;
-      console.log(response.data);
     })["catch"](function (error) {
       console.log(error);
     });
@@ -37260,40 +37262,60 @@ var render = function() {
       _vm._v(" "),
       _vm._l(_vm.comments, function(comment) {
         return _c("div", { key: comment.id, staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: _vm.route("profile.show", {
+                    profile: comment.user.profile
+                  })
+                }
+              },
+              [_vm._v(_vm._s(comment.user.name))]
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(comment.created_at))])
+          ]),
+          _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("p", [_vm._v(_vm._s(comment.body))])
           ])
         ])
       }),
       _vm._v(" "),
-      _c("p", [_vm._v("Add a comment")]),
-      _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.comment,
-            expression: "comment"
-          }
-        ],
-        attrs: { placeholder: "What would you like to say?" },
-        domProps: { value: _vm.comment },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.comment = $event.target.value
-          }
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", on: { click: _vm.addComment } },
-        [_vm._v("Submit")]
-      )
+      _vm.user
+        ? _c("div", { staticClass: "add-comment-form" }, [
+            _c("p", [_vm._v("Add a comment")]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.comment,
+                  expression: "comment"
+                }
+              ],
+              attrs: { placeholder: "What would you like to say?" },
+              domProps: { value: _vm.comment },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.comment = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", on: { click: _vm.addComment } },
+              [_vm._v("Submit")]
+            )
+          ])
+        : _vm._e()
     ],
     2
   )

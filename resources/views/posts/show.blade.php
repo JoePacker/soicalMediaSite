@@ -39,7 +39,7 @@
 {{--                    <p>There are no comments to display</p>--}}
 {{--                @endforelse--}}
 
-                <comments-section :post="{{ $post }}"></comments-section>
+                <comments-section :post="{{ $post }}" @if(auth()->check()) :user="{{ auth()->user() }}" @endif></comments-section>
             </div>
         </div>
     </div>
