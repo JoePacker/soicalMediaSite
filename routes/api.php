@@ -13,14 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/posts/{post}/comments', 'CommentController@index')->name('comments.index');
 
-Route::post('/posts/{post}/comments', 'CommentController@store')->name('comments.store');
+Route::middleware('auth:api')->group(function () {
 
-Route::apiResource('comments', 'CommentController')->only([
-    'update', 'destroy',
-]);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::post('/posts/{post}/comments', 'CommentController@store')->name('comments.store');
+
+    Route::apiResource('comments', 'CommentController')->only([
+        'update', 'destroy',
+    ]);
+
+});

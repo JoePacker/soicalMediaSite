@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
         $user->name = 'Joe Packer';
         $user->email = 'joepacker@email.com';
         $user->password = bcrypt('password');
+        $user->api_token = 'WagE56qgvepwm592l8vAxvKdYY13FnDVKIDRlpEwJM9zFOsf32yj4V6dFu0kgMrKegPshmLVA462NR2d';
         $user->save();
 
         $user->assignRole('admin');

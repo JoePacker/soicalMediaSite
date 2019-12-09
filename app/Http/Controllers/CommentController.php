@@ -22,14 +22,21 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Post $post
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request, Post $post)
     {
+        $this->authorize('create', 'App\Comment');
+
+        $request->validate([
+            'comment' => 'required|max:300',
+        ]);
+
         $comment = new Comment();
-        $comment->user_id = $request->user;
+        $comment->user_id = $request->user()->id;
         $comment->body = $request->comment;
 
         $post->comments()->save($comment);

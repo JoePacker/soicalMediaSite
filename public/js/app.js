@@ -1871,6 +1871,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     user: {
       type: Object
+    },
+    canAddComment: {
+      type: Boolean
     }
   },
   data: function data() {
@@ -1888,8 +1891,10 @@ __webpack_require__.r(__webpack_exports__);
         post: this.post
       }), {
         comment: this.comment,
-        user: this.user.id
+        api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')
       }).then(function (response) {
+        console.log(response.data);
+
         _this.comments.push(response.data);
       })["catch"](function (error) {
         console.log(error);
@@ -1899,6 +1904,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
+    console.log(this.canAddComment);
     axios.get(route('comments.index', {
       post: this.post
     })).then(function (response) {
@@ -37284,7 +37290,7 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _vm.user
+      _vm.canAddComment
         ? _c("div", { staticClass: "add-comment-form" }, [
             _c("p", [_vm._v("Add a comment")]),
             _vm._v(" "),

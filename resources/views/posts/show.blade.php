@@ -23,23 +23,7 @@
 
                 <p>{{ $post->body }}</p>
 
-{{--                <h2>Comments</h2>--}}
-{{--                @forelse ($post->comments as $comment)--}}
-{{--                    <div class="card">--}}
-{{--                        <div class="card-header">--}}
-{{--                            <a href="{{ route('profile.show', ['profile' => $comment->user->profile]) }}">{{ $comment->user->name }}</a>--}}
-{{--                            <span>{{ $comment->created_at }}</span>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="card-body">--}}
-{{--                            <p>{{ $comment->body }}</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                @empty--}}
-{{--                    <p>There are no comments to display</p>--}}
-{{--                @endforelse--}}
-
-                <comments-section :post="{{ $post }}" @if(auth()->check()) :user="{{ auth()->user() }}" @endif></comments-section>
+                <comments-section :post="{{ $post }}" @can('create', 'App\Comment') :can-add-comment="true" @endcan></comments-section>
             </div>
         </div>
     </div>

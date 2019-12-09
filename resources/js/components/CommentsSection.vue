@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div v-if="user" class="add-comment-form">
+        <div v-if="canAddComment" class="add-comment-form">
             <p>Add a comment</p>
             <textarea v-model="comment" placeholder="What would you like to say?"></textarea>
             <button class="btn btn-primary" @click="addComment">Submit</button>
@@ -30,8 +30,8 @@
                 type: Object,
                 required: true
             },
-            user: {
-                type: Object
+            canAddComment: {
+                type: Boolean
             }
         },
 
@@ -44,9 +44,10 @@
 
         methods: {
             addComment() {
-                console.log('add comment!');
-
-                axios.post(route('comments.store', {post: this.post}), {comment: this.comment, user: this.user.id})
+                axios.post(route('comments.store', {post: this.post}), {
+                    comment: this.comment,
+                    api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')
+                })
                     .then(response => {
                         this.comments.push(response.data);
                     })
