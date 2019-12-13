@@ -1863,14 +1863,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: {
       type: Object,
       required: true
-    },
-    user: {
-      type: Object
     },
     canAddComment: {
       type: Boolean
@@ -1878,6 +1880,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      errors: null,
       comments: [],
       comment: ''
     };
@@ -1886,31 +1889,46 @@ __webpack_require__.r(__webpack_exports__);
     addComment: function addComment() {
       var _this = this;
 
-      console.log('add comment!');
       axios.post(route('comments.store', {
         post: this.post
       }), {
         comment: this.comment,
         api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')
       }).then(function (response) {
-        console.log(response.data);
+        _this.comments.unshift(response.data);
 
-        _this.comments.push(response.data);
+        _this.comment = '';
       })["catch"](function (error) {
-        console.log(error);
+        _this.errors = Object.values(error.response.data.errors).flat();
+      });
+    },
+    deleteComment: function deleteComment(comment) {
+      var _this2 = this;
+
+      axios["delete"](route('comments.destroy', {
+        comment: comment
+      }), {
+        data: {
+          api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')
+        }
+      }).then(function (response) {
+        _this2.comments = _this2.comments.filter(function (c) {
+          return c.id !== comment.id;
+        });
+      })["catch"](function (error) {
+        _this2.errors = [error.response.data.message];
       });
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
-    console.log(this.canAddComment);
     axios.get(route('comments.index', {
       post: this.post
     })).then(function (response) {
-      _this2.comments = response.data;
+      _this3.comments = response.data;
     })["catch"](function (error) {
-      console.log(error);
+      _this3.errors = [error.response.data.message];
     });
   }
 });
@@ -37262,34 +37280,6 @@ var render = function() {
     [
       _c("h2", [_vm._v("Comments")]),
       _vm._v(" "),
-      !_vm.comments.length
-        ? _c("p", [_vm._v("There are no comments to display")])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm._l(_vm.comments, function(comment) {
-        return _c("div", { key: comment.id, staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c(
-              "a",
-              {
-                attrs: {
-                  href: _vm.route("profile.show", {
-                    profile: comment.user.profile
-                  })
-                }
-              },
-              [_vm._v(_vm._s(comment.user.name))]
-            ),
-            _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(comment.created_at))])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("p", [_vm._v(_vm._s(comment.body))])
-          ])
-        ])
-      }),
-      _vm._v(" "),
       _vm.canAddComment
         ? _c("div", { staticClass: "add-comment-form" }, [
             _c("p", [_vm._v("Add a comment")]),
@@ -37321,7 +37311,59 @@ var render = function() {
               [_vm._v("Submit")]
             )
           ])
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errors
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            _vm._l(_vm.errors, function(error) {
+              return _c("p", [_vm._v(_vm._s(error))])
+            }),
+            0
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.comments.length
+        ? _c("p", [_vm._v("There are no comments to display")])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.comments, function(comment) {
+        return _c("div", { key: comment.id, staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: _vm.route("profile.show", {
+                    profile: comment.user.profile
+                  })
+                }
+              },
+              [_vm._v(_vm._s(comment.user.name))]
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(comment.created_at))]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteComment(comment)
+                  }
+                }
+              },
+              [_vm._v("Delete")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("p", [_vm._v(_vm._s(comment.body))])
+          ])
+        ])
+      })
     ],
     2
   )

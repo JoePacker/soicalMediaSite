@@ -23,7 +23,7 @@
 
                 <p>{{ $post->body }}</p>
 
-                <comments-section :post="{{ $post }}" @can('create', 'App\Comment') :can-add-comment="true" @endcan></comments-section>
+                <comments-section :post="{{ $post }}" @can('create', 'App\Comment') :can-add-comment="true" @endcan/>
             </div>
         </div>
     </div>

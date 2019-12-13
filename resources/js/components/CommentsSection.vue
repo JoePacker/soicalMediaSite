@@ -2,23 +2,28 @@
     <div class="comments-section">
         <h2>Comments</h2>
 
+        <div v-if="canAddComment" class="add-comment-form">
+            <p>Add a comment</p>
+            <textarea v-model="comment" placeholder="What would you like to say?"></textarea>
+            <button class="btn btn-primary" @click="addComment">Submit</button>
+        </div>
+
+        <div v-if="errors" class="alert alert-danger" role="alert">
+            <p v-for="error in errors">{{ error }}</p>
+        </div>
+
         <p v-if="!comments.length">There are no comments to display</p>
 
         <div class="card" v-for="comment in comments" :key="comment.id">
             <div class="card-header">
                 <a :href="route('profile.show', {profile: comment.user.profile})">{{ comment.user.name }}</a>
                 <span>{{ comment.created_at }}</span>
+                <button class="btn btn-danger" @click="deleteComment(comment)">Delete</button>
             </div>
 
             <div class="card-body">
                 <p>{{ comment.body }}</p>
             </div>
-        </div>
-
-        <div v-if="canAddComment" class="add-comment-form">
-            <p>Add a comment</p>
-            <textarea v-model="comment" placeholder="What would you like to say?"></textarea>
-            <button class="btn btn-primary" @click="addComment">Submit</button>
         </div>
     </div>
 </template>
@@ -37,6 +42,7 @@
 
         data() {
             return {
+                errors: null,
                 comments: [],
                 comment: ''
             }
@@ -49,10 +55,22 @@
                     api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')
                 })
                     .then(response => {
-                        this.comments.push(response.data);
+                        this.comments.unshift(response.data);
+                        this.comment = '';
                     })
                     .catch(error => {
-                        console.log(error);
+                        this.errors = Object.values(error.response.data.errors).flat();
+                    });
+            },
+            deleteComment(comment) {
+                axios.delete(route('comments.destroy', {comment: comment}), {
+                    data: {api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')}
+                })
+                    .then(response => {
+                        this.comments = this.comments.filter(c => c.id !== comment.id);
+                    })
+                    .catch(error => {
+                        this.errors = [error.response.data.message];
                     });
             }
         },
@@ -63,7 +81,7 @@
                     this.comments = response.data;
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.errors = [error.response.data.message];
                 });
         }
     }
