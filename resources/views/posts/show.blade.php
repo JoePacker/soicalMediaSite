@@ -12,6 +12,20 @@
 
                 <h1>{{ $post->title }}</h1>
 
+                @can('update', $post)
+                    <div>
+                        <a href="{{ route('posts.edit', ['post' => $post]) }}" class="btn btn-primary">Edit post</a>
+                    </div>
+                @endcan
+
+                @can('delete', $post)
+                    <form method="POST" action="{{ route('posts.destroy', ['post' => $post]) }}">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Delete post</button>
+                    </form>
+                @endcan
+
                 <div>
                     <a href="{{ route('profile.show', ['profile' => $post->user->profile]) }}">{{ $post->user->name }}</a>
                     <span>{{ $post->created_at }}</span>

@@ -43,7 +43,7 @@ class PostController extends Controller
 
         $request->validate([
             'title' => 'required|max:255',
-            'body' => 'required',
+            'body' => 'required|max:5000',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -57,7 +57,7 @@ class PostController extends Controller
 
         $request->user()->posts()->save($post);
 
-        return redirect()->route('posts.show', ['post' => $post])->with('status', 'A post was successfully created');
+        return redirect()->route('posts.show', ['post' => $post])->with('status', 'The post was successfully created');
     }
 
     /**
@@ -81,6 +81,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $this->authorize('update', $post);
+
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
@@ -94,6 +96,23 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $this->authorize('update', $post);
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required|max:5000',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $post->title = $request->title;
+        $post->body = $request->body;
+
+        if ($request->hasFile('image')) {
+            $post->image = $request->file('image')->store('images/posts', 'public');
+        }
+
+        $post->save();
+
+        return redirect()->route('posts.show', ['post' => $post])->with('status', 'The post was successfully edited');
     }
 
     /**
@@ -106,5 +125,9 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
+
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('status', 'The post was successfully deleted');
     }
 }

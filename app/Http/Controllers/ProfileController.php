@@ -58,6 +58,6 @@ class ProfileController extends Controller
 
         $profile->save();
 
-        return redirect()->route('profile.show', ['profile' => $profile])->with('status', 'A profile was successfully updated');
+        return redirect()->route('profile.show', ['profile' => $profile])->with('status', 'The profile was successfully updated');
     }
 }
