@@ -2,7 +2,7 @@
     <div class="comments-section">
         <h2>Comments</h2>
 
-        <div v-if="canAddComment" class="add-comment-form">
+        <div v-if="can('create_comment')" class="add-comment-form">
             <p>Add a comment</p>
             <textarea v-model="comment" placeholder="What would you like to say?"></textarea>
             <button class="btn btn-primary" @click="addComment">Submit</button>
@@ -18,7 +18,12 @@
             <div class="card-header">
                 <a :href="route('profile.show', {profile: comment.user.profile})">{{ comment.user.name }}</a>
                 <span>{{ comment.created_at }}</span>
-                <button class="btn btn-danger" @click="deleteComment(comment)">Delete</button>
+                <button v-if="can('edit_any_comment') || (can('edit_own_comment') && user.id === comment.user_id)"
+                        class="btn btn-info" @click="editComment(comment)">Edit
+                </button>
+                <button v-if="can('delete_any_comment') || (can('delete_own_comment') && user.id === comment.user_id)"
+                        class="btn btn-danger" @click="deleteComment(comment)">Delete
+                </button>
             </div>
 
             <div class="card-body">
@@ -35,8 +40,8 @@
                 type: Object,
                 required: true
             },
-            canAddComment: {
-                type: Boolean
+            user: {
+                type: Object
             }
         },
 
@@ -61,6 +66,9 @@
                     .catch(error => {
                         this.errors = Object.values(error.response.data.errors).flat();
                     });
+            },
+            editComment(comment) {
+                console.log('edit comment ' + comment.id);
             },
             deleteComment(comment) {
                 axios.delete(route('comments.destroy', {comment: comment}), {

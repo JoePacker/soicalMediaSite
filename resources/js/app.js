@@ -21,7 +21,8 @@ window.Vue = require('vue');
 
 Vue.mixin({
     methods: {
-        route: route
+        route: route,
+        can: can
     }
 });
 

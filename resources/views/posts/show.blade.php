@@ -23,7 +23,7 @@
 
                 <p>{{ $post->body }}</p>
 
-                <comments-section :post="{{ $post }}" @can('create', 'App\Comment') :can-add-comment="true" @endcan/>
+                <comments-section :post="{{ $post }}" @auth :user="{{ Auth::user() }}" @endauth/>
             </div>
         </div>
     </div>

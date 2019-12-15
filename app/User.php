@@ -77,6 +77,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the permissions for the user.
+     */
+    public function permissions()
+    {
+        $permissions = [];
+
+        foreach ($this->roles as $role) {
+            $role->permissions->each(function ($permission) use (&$permissions) {
+                $permissions[] = $permission;
+            });
+        }
+
+        return collect($permissions);
+    }
+
+    /**
      * todo: add comment.
      */
     public function hasRole($role)

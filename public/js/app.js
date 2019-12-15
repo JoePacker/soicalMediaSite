@@ -1868,14 +1868,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: {
       type: Object,
       required: true
     },
-    canAddComment: {
-      type: Boolean
+    user: {
+      type: Object
     }
   },
   data: function data() {
@@ -1901,6 +1906,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.errors = Object.values(error.response.data.errors).flat();
       });
+    },
+    editComment: function editComment(comment) {
+      console.log('edit comment ' + comment.id);
     },
     deleteComment: function deleteComment(comment) {
       var _this2 = this;
@@ -37280,7 +37288,7 @@ var render = function() {
     [
       _c("h2", [_vm._v("Comments")]),
       _vm._v(" "),
-      _vm.canAddComment
+      _vm.can("create_comment")
         ? _c("div", { staticClass: "add-comment-form" }, [
             _c("p", [_vm._v("Add a comment")]),
             _vm._v(" "),
@@ -37345,18 +37353,37 @@ var render = function() {
             _vm._v(" "),
             _c("span", [_vm._v(_vm._s(comment.created_at))]),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-danger",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteComment(comment)
-                  }
-                }
-              },
-              [_vm._v("Delete")]
-            )
+            _vm.can("edit_any_comment") ||
+            (_vm.can("edit_own_comment") && _vm.user.id === comment.user_id)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-info",
+                    on: {
+                      click: function($event) {
+                        return _vm.editComment(comment)
+                      }
+                    }
+                  },
+                  [_vm._v("Edit\n            ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.can("delete_any_comment") ||
+            (_vm.can("delete_own_comment") && _vm.user.id === comment.user_id)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger",
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteComment(comment)
+                      }
+                    }
+                  },
+                  [_vm._v("Delete\n            ")]
+                )
+              : _vm._e()
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
@@ -49585,7 +49612,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.mixin({
   methods: {
-    route: route
+    route: route,
+    can: can
   }
 });
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
