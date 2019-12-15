@@ -32,12 +32,12 @@ class CommentController extends Controller
         $this->authorize('create', 'App\Comment');
 
         $request->validate([
-            'comment' => 'required|max:300',
+            'body' => 'required|max:300',
         ]);
 
         $comment = new Comment();
         $comment->user_id = $request->user()->id;
-        $comment->body = $request->comment;
+        $comment->body = $request->body;
 
         $post->comments()->save($comment);
 
@@ -47,13 +47,23 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Comment  $comment
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Comment $comment
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $this->authorize('update', $comment);
+
+        $request->validate([
+            'body' => 'required|max:300',
+        ]);
+
+        $comment->body = $request->body;
+        $comment->save();
+
+        return $comment;
     }
 
     /**

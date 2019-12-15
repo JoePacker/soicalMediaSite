@@ -4,32 +4,22 @@
 
         <div v-if="can('create_comment')" class="add-comment-form">
             <p>Add a comment</p>
-            <textarea v-model="comment" placeholder="What would you like to say?"></textarea>
-            <button class="btn btn-primary" @click="addComment">Submit</button>
-        </div>
 
-        <div v-if="errors" class="alert alert-danger" role="alert">
-            <p v-for="error in errors">{{ error }}</p>
+            <error v-for="(error, index) in errors" :key="index" :message="error"></error>
+
+            <textarea v-model="body" rows="3" cols="50" placeholder="What would you like to say?"></textarea>
+            <button class="btn btn-primary" @click="addComment">Add</button>
         </div>
 
         <p v-if="!comments.length">There are no comments to display</p>
 
-        <div class="card" v-for="comment in comments" :key="comment.id">
-            <div class="card-header">
-                <a :href="route('profile.show', {profile: comment.user.profile})">{{ comment.user.name }}</a>
-                <span>{{ comment.created_at }}</span>
-                <button v-if="can('edit_any_comment') || (can('edit_own_comment') && user.id === comment.user_id)"
-                        class="btn btn-info" @click="editComment(comment)">Edit
-                </button>
-                <button v-if="can('delete_any_comment') || (can('delete_own_comment') && user.id === comment.user_id)"
-                        class="btn btn-danger" @click="deleteComment(comment)">Delete
-                </button>
-            </div>
-
-            <div class="card-body">
-                <p>{{ comment.body }}</p>
-            </div>
-        </div>
+        <comment v-for="comment in comments"
+                 :key="comment.id"
+                 :comment="comment"
+                 :user="user"
+                 @comment-updated="updateComment($event)"
+                 @comment-deleted="deleteComment($event)">
+        </comment>
     </div>
 </template>
 
@@ -47,39 +37,36 @@
 
         data() {
             return {
-                errors: null,
+                errors: [],
                 comments: [],
-                comment: ''
+                body: ''
             }
         },
 
         methods: {
             addComment() {
                 axios.post(route('comments.store', {post: this.post}), {
-                    comment: this.comment,
+                    body: this.body,
                     api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')
                 })
                     .then(response => {
                         this.comments.unshift(response.data);
-                        this.comment = '';
+                        this.body = '';
+                        this.errors = [];
                     })
                     .catch(error => {
                         this.errors = Object.values(error.response.data.errors).flat();
                     });
             },
-            editComment(comment) {
-                console.log('edit comment ' + comment.id);
+            updateComment($event) {
+                this.comments.forEach((comment, index) => {
+                    if (comment.id === $event.comment.id) {
+                        this.comments[index] = $event.comment;
+                    }
+                });
             },
-            deleteComment(comment) {
-                axios.delete(route('comments.destroy', {comment: comment}), {
-                    data: {api_token: document.querySelector('meta[name="api-token"]').getAttribute('content')}
-                })
-                    .then(response => {
-                        this.comments = this.comments.filter(c => c.id !== comment.id);
-                    })
-                    .catch(error => {
-                        this.errors = [error.response.data.message];
-                    });
+            deleteComment($event) {
+                this.comments = this.comments.filter(c => c.id !== $event.comment.id);
             }
         },
 

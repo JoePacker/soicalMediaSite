@@ -26,8 +26,9 @@ Vue.mixin({
     }
 });
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('comments-section', require('./components/CommentsSection.vue').default);
+Vue.component('comment', require('./components/Comment.vue').default);
+Vue.component('error', require('./components/Error.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

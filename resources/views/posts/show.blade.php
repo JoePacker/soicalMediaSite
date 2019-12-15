@@ -23,7 +23,7 @@
 
                 <p>{{ $post->body }}</p>
 
-                <comments-section :post="{{ $post }}" @auth :user="{{ Auth::user() }}" @endauth/>
+                <comments-section :post="{{ $post }}" @auth :user="{{ Auth::user() }}" @endauth></comments-section>
             </div>
         </div>
     </div>
