@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Services\Weather;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -43,12 +44,14 @@ class PostController extends Controller
 
         $request->validate([
             'title' => 'required|max:255',
+            'city' => 'required|max:50',
             'body' => 'required|max:5000',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $post = new Post;
         $post->title = $request->title;
+        $post->city = $request->city;
         $post->body = $request->body;
 
         if ($request->hasFile('image')) {
@@ -63,12 +66,24 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param  \App\Post $post
+     * @param  \App\Services\Weather $weather
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Post $post, Weather $weather)
     {
-        return view('posts.show', ['post' => $post]);
+        $data = [];
+
+        $data['post'] = $post;
+
+        $weather_data = $weather->getWeatherByCity($post->city);
+
+        if ($weather_data->cod === 200) {
+            $data['weather']['description'] = reset($weather_data->weather)->description;
+            $data['weather']['icon'] = reset($weather_data->weather)->icon;
+        }
+
+        return view('posts.show', $data);
     }
 
     /**
@@ -99,11 +114,13 @@ class PostController extends Controller
 
         $request->validate([
             'title' => 'required|max:255',
+            'city' => 'required|max:50',
             'body' => 'required|max:5000',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $post->title = $request->title;
+        $post->city = $request->city;
         $post->body = $request->body;
 
         if ($request->hasFile('image')) {

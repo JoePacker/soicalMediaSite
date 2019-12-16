@@ -16,6 +16,7 @@ class PostsTableSeeder extends Seeder
         $post = new Post;
         $post->user_id = 1;
         $post->title = 'This is an awesome post';
+        $post->city = 'Swansea';
         $post->image = 'https://lorempixel.com/720/480/?12345';
         $post->body = 'This is the body of my post. It contains all the information about the post and should be read by everyone.';
         $post->save();

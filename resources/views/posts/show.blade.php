@@ -26,6 +26,13 @@
                     </form>
                 @endcan
 
+                @isset($weather)
+                    <p>{{ $weather['description'] }}</p>
+                    <img src="https://openweathermap.org/img/wn/{{ $weather['icon'] }}@2x.png" alt="{{ $weather['description'] }}">
+                @else
+                    <p>No weather information to display</p>
+                @endisset
+
                 <div>
                     <a href="{{ route('profile.show', ['profile' => $post->user->profile]) }}">{{ $post->user->name }}</a>
                     <span>{{ $post->created_at }}</span>
