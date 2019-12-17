@@ -13,7 +13,7 @@
                 <h1>Posts</h1>
 
                 @can('create', 'App\Post')
-                    <a href="{{ route('posts.create') }}" class="btn btn-primary">Create post</a>
+                    <p>Can't find what you're looking for? <a href="{{ route('posts.create') }}" class="btn btn-primary ml-2">Create a post</a></p>
                 @endcan
 
                 <div class="row">

@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Profile::class, function (Faker $faker) {
     return [
-        'image' => $faker->imageUrl(64, 64),
+        'image' => 'https://picsum.photos/id/' . $faker->numberBetween(151, 200) . '/128',
         'bio' => $faker->text(300),
         'user_id' => function () {
             return factory(App\User::class)->create()->id;

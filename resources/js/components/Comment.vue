@@ -2,28 +2,36 @@
     <div class="comment">
         <div class="card">
             <div class="card-header">
-                <a :href="route('profile.show', {profile: comment.user.profile})">{{ comment.user.name }}</a>
-                <span>{{ comment.created_at }}</span>
-                <span v-if="isEditing">
-                    <button class="btn btn-primary" @click="updateComment">Update</button>
-                    <button class="btn btn-danger" @click="cancelComment">Cancel</button>
-                </span>
-                <span v-else>
-                    <button
-                        v-if="can('edit_any_comment') || (can('edit_own_comment') && user.id === comment.user_id)"
-                        class="btn btn-info" @click="isEditing = true">Edit
-                    </button>
-                    <button
-                        v-if="can('delete_any_comment') || (can('delete_own_comment') && user.id === comment.user_id)"
-                        class="btn btn-danger" @click="deleteComment">Delete
-                    </button>
-                </span>
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <a :href="route('profile.show', {profile: comment.user.profile})">{{ comment.user.name }}</a>
+                        <span>{{ comment.created_at }}</span>
+                    </div>
+                    <div class="col-5">
+                        <div class="float-right">
+                            <div v-if="isEditing">
+                                <button class="btn btn-primary" @click="updateComment">Update</button>
+                                <button class="btn btn-danger" @click="cancelComment">Cancel</button>
+                            </div>
+                            <div v-else>
+                                <button
+                                    v-if="can('edit_any_comment') || (can('edit_own_comment') && user.id === comment.user_id)"
+                                    class="btn btn-primary" @click="isEditing = true">Edit
+                                </button>
+                                <button
+                                    v-if="can('delete_any_comment') || (can('delete_own_comment') && user.id === comment.user_id)"
+                                    class="btn btn-danger" @click="deleteComment">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="card-body">
                 <error v-for="(error, index) in errors" :key="index" :message="error"></error>
 
-                <textarea v-if="isEditing" v-model="body" rows="3" cols="50"></textarea>
+                <textarea v-if="isEditing" v-model="body" class="form-control" rows="3"></textarea>
                 <p v-else>{{ comment.body }}</p>
             </div>
         </div>

@@ -1870,6 +1870,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     comment: {
@@ -1945,6 +1953,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -37374,71 +37386,79 @@ var render = function() {
   return _c("div", { staticClass: "comment" }, [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
-        _c(
-          "a",
-          {
-            attrs: {
-              href: _vm.route("profile.show", {
-                profile: _vm.comment.user.profile
-              })
-            }
-          },
-          [_vm._v(_vm._s(_vm.comment.user.name))]
-        ),
-        _vm._v(" "),
-        _c("span", [_vm._v(_vm._s(_vm.comment.created_at))]),
-        _vm._v(" "),
-        _vm.isEditing
-          ? _c("span", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: { click: _vm.updateComment }
-                },
-                [_vm._v("Update")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  on: { click: _vm.cancelComment }
-                },
-                [_vm._v("Cancel")]
-              )
+        _c("div", { staticClass: "row align-items-center" }, [
+          _c("div", { staticClass: "col-7" }, [
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: _vm.route("profile.show", {
+                    profile: _vm.comment.user.profile
+                  })
+                }
+              },
+              [_vm._v(_vm._s(_vm.comment.user.name))]
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(_vm.comment.created_at))])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-5" }, [
+            _c("div", { staticClass: "float-right" }, [
+              _vm.isEditing
+                ? _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.updateComment }
+                      },
+                      [_vm._v("Update")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: { click: _vm.cancelComment }
+                      },
+                      [_vm._v("Cancel")]
+                    )
+                  ])
+                : _c("div", [
+                    _vm.can("edit_any_comment") ||
+                    (_vm.can("edit_own_comment") &&
+                      _vm.user.id === _vm.comment.user_id)
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            on: {
+                              click: function($event) {
+                                _vm.isEditing = true
+                              }
+                            }
+                          },
+                          [_vm._v("Edit\n                            ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.can("delete_any_comment") ||
+                    (_vm.can("delete_own_comment") &&
+                      _vm.user.id === _vm.comment.user_id)
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: { click: _vm.deleteComment }
+                          },
+                          [_vm._v("Delete\n                            ")]
+                        )
+                      : _vm._e()
+                  ])
             ])
-          : _c("span", [
-              _vm.can("edit_any_comment") ||
-              (_vm.can("edit_own_comment") &&
-                _vm.user.id === _vm.comment.user_id)
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-info",
-                      on: {
-                        click: function($event) {
-                          _vm.isEditing = true
-                        }
-                      }
-                    },
-                    [_vm._v("Edit\n                ")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.can("delete_any_comment") ||
-              (_vm.can("delete_own_comment") &&
-                _vm.user.id === _vm.comment.user_id)
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger",
-                      on: { click: _vm.deleteComment }
-                    },
-                    [_vm._v("Delete\n                ")]
-                  )
-                : _vm._e()
-            ])
+          ])
+        ])
       ]),
       _vm._v(" "),
       _c(
@@ -37459,7 +37479,8 @@ var render = function() {
                     expression: "body"
                   }
                 ],
-                attrs: { rows: "3", cols: "50" },
+                staticClass: "form-control",
+                attrs: { rows: "3" },
                 domProps: { value: _vm.body },
                 on: {
                   input: function($event) {
@@ -37508,61 +37529,58 @@ var render = function() {
       _vm.can("create_comment")
         ? _c(
             "div",
-            { staticClass: "add-comment-form" },
+            { staticClass: "add-comment-form mb-4" },
             [
-              _c("p", [_vm._v("Add a comment")]),
-              _vm._v(" "),
               _vm._l(_vm.errors, function(error, index) {
                 return _c("error", { key: index, attrs: { message: error } })
               }),
               _vm._v(" "),
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.body,
-                    expression: "body"
-                  }
-                ],
-                attrs: {
-                  rows: "3",
-                  cols: "50",
-                  placeholder: "What would you like to say?"
-                },
-                domProps: { value: _vm.body },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-10" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.body,
+                        expression: "body"
+                      }
+                    ],
+                    staticClass: "form-control mb-2",
+                    attrs: {
+                      rows: "3",
+                      placeholder: "What would you like to say?"
+                    },
+                    domProps: { value: _vm.body },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.body = $event.target.value
+                      }
                     }
-                    _vm.body = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: { click: _vm.addComment }
-                },
-                [_vm._v("Add")]
-              )
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      on: { click: _vm.addComment }
+                    },
+                    [_vm._v("Add")]
+                  )
+                ])
+              ])
             ],
             2
           )
         : _vm._e(),
       _vm._v(" "),
       !_vm.comments.length
-        ? _c(
-            "div",
-            {
-              staticClass: "spinner-border text-primary",
-              attrs: { role: "status" }
-            },
-            [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
-          )
+        ? _c("div", { staticClass: "d-flex justify-content-center" }, [
+            _vm._m(0)
+          ])
         : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.comments, function(comment) {
@@ -37583,7 +37601,21 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "spinner-border text-secondary",
+        attrs: { role: "status" }
+      },
+      [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+    )
+  }
+]
 render._withStripped = true
 
 

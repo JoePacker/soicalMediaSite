@@ -10,9 +10,9 @@
                     </div>
                 @endif
 
-                <h1>{{ $profile->user->name }}</h1>
+                <img class="img-fluid rounded-circle mb-3" src="{{ asset($profile->image) }}" alt="{{ $profile->user->name }}" width="128">
 
-                <img class="img-fluid" src="{{ asset($profile->image) }}" alt="{{ $profile->user->name }}">
+                <h1>{{ $profile->user->name }}</h1>
 
                 @isset($profile->bio)
                     <p>{{ $profile->bio }}</p>

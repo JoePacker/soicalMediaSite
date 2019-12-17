@@ -16,7 +16,7 @@ class ProfilesTableSeeder extends Seeder
         $profile = new Profile;
         $profile->user_id = 1;
         $profile->bio = 'This is my biography where I talk about myself and all of my interests.';
-        $profile->image = 'https://lorempixel.com/64/64/?12345';
+        $profile->image = 'https://picsum.photos/id/237/128';
         $profile->save();
 
         User::all()->except($profile->user_id)->each(function ($user) {

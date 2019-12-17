@@ -9,7 +9,7 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence(5),
         'city' => $faker->city,
-        'image' => $faker->imageUrl(720, 480),
+        'image' => 'https://picsum.photos/id/' . $faker->numberBetween(1051, 1080) . '/720/480',
         'body' => $faker->text(1000),
         'user_id' => function () {
             return factory(App\User::class)->create()->id;

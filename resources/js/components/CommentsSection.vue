@@ -2,17 +2,21 @@
     <div class="comments-section">
         <h2>Comments</h2>
 
-        <div v-if="can('create_comment')" class="add-comment-form">
-            <p>Add a comment</p>
+        <div v-if="can('create_comment')" class="add-comment-form mb-4">
+            <div class="row">
+                <div class="col-10">
+                    <error v-for="(error, index) in errors" :key="index" :message="error"></error>
 
-            <error v-for="(error, index) in errors" :key="index" :message="error"></error>
-
-            <textarea v-model="body" rows="3" cols="50" placeholder="What would you like to say?"></textarea>
-            <button class="btn btn-primary" @click="addComment">Add</button>
+                    <textarea v-model="body" class="form-control mb-2" rows="3" placeholder="What would you like to say?"></textarea>
+                    <button class="btn btn-primary" @click="addComment">Add</button>
+                </div>
+            </div>
         </div>
 
-        <div v-if="!comments.length" class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
+        <div v-if="!comments.length" class="d-flex justify-content-center">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
 
         <comment v-for="comment in comments"
