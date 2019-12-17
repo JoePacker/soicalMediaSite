@@ -11,7 +11,9 @@
             <button class="btn btn-primary" @click="addComment">Add</button>
         </div>
 
-        <p v-if="!comments.length">There are no comments to display</p>
+        <div v-if="!comments.length" class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
 
         <comment v-for="comment in comments"
                  :key="comment.id"

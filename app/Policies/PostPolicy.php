@@ -17,7 +17,7 @@ class PostPolicy
      * @param  string  $ability
      * @return mixed
      */
-    public function before($user, $ability)
+    public function before(User $user, $ability)
     {
         if ($user->hasRole('admin')) {
             return true;

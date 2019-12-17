@@ -1970,6 +1970,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: {
@@ -37553,7 +37555,14 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       !_vm.comments.length
-        ? _c("p", [_vm._v("There are no comments to display")])
+        ? _c(
+            "div",
+            {
+              staticClass: "spinner-border text-primary",
+              attrs: { role: "status" }
+            },
+            [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+          )
         : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.comments, function(comment) {

@@ -61,6 +61,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @can('viewAny', 'App\User')
+                                        <a class="dropdown-item" href="{{ route('users.index') }}">Manage users</a>
+                                    @endcan
+
                                     <a class="dropdown-item" href="{{ route('profile.show', ['profile' => Auth::user()->profile]) }}">View profile</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"

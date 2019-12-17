@@ -18,7 +18,8 @@ class RolesTableSeeder extends Seeder
         $adminRole->label = 'Administrator';
         $adminRole->save();
 
-        $adminRole->givePermissionTo('delete_user');
+        $adminRole->givePermissionTo('manage_users');
+        $adminRole->givePermissionTo('delete_any_user');
         $adminRole->givePermissionTo('assign_role');
         $adminRole->givePermissionTo('revoke_role');
         $adminRole->givePermissionTo('assign_permission');

@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::resource('users', 'UserController')->only([
+    'index', 'destroy',
+]);
+
 Route::resource('profile', 'ProfileController')->only([
     'show', 'edit', 'update',
 ]);
