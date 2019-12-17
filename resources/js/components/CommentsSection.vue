@@ -13,11 +13,13 @@
             </div>
         </div>
 
-        <div v-if="!comments.length" class="d-flex justify-content-center">
+        <div v-if="fetching" class="d-flex justify-content-center">
             <div class="spinner-border text-secondary" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
+
+        <p v-if="!fetching && !comments.length">There are no comments to display.</p>
 
         <comment v-for="comment in comments"
                  :key="comment.id"
@@ -43,6 +45,7 @@
 
         data() {
             return {
+                fetching: false,
                 errors: [],
                 comments: [],
                 body: ''
@@ -77,11 +80,15 @@
         },
 
         mounted() {
+            this.fetching = true;
+
             axios.get(route('comments.index', {post: this.post}))
                 .then(response => {
+                    this.fetching = false;
                     this.comments = response.data;
                 })
                 .catch(error => {
+                    this.fetching = false;
                     this.errors = [error.response.data.message];
                 });
         }

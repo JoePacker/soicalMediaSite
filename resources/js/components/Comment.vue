@@ -1,5 +1,5 @@
 <template>
-    <div class="comment">
+    <div class="comment mb-3">
         <div class="card">
             <div class="card-header">
                 <div class="row align-items-center">

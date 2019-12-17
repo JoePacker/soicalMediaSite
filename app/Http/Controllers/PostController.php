@@ -74,13 +74,13 @@ class PostController extends Controller
     {
         $data['post'] = $post;
 
-//        $weather_data = $weather->getWeatherByCity($post->city);
-//
-//        if ($weather_data->cod === 200) {
-//            $data['weather']['description'] = ucfirst(reset($weather_data->weather)->description);
-//            $data['weather']['icon'] = reset($weather_data->weather)->icon;
-//            $data['weather']['temperature'] = round($weather_data->main->temp - 273.15);
-//        }
+        $weather_data = $weather->getWeatherByCity($post->city);
+
+        if ($weather_data->cod === 200) {
+            $data['weather']['description'] = ucfirst(reset($weather_data->weather)->description);
+            $data['weather']['icon'] = reset($weather_data->weather)->icon;
+            $data['weather']['temperature'] = round($weather_data->main->temp - 273.15);
+        }
 
         return view('posts.show', $data);
     }

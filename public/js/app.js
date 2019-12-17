@@ -1984,6 +1984,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: {
@@ -1996,6 +1998,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      fetching: false,
       errors: [],
       comments: [],
       body: ''
@@ -2037,11 +2040,14 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this3 = this;
 
+    this.fetching = true;
     axios.get(route('comments.index', {
       post: this.post
     })).then(function (response) {
+      _this3.fetching = false;
       _this3.comments = response.data;
     })["catch"](function (error) {
+      _this3.fetching = false;
       _this3.errors = [error.response.data.message];
     });
   }
@@ -37383,7 +37389,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "comment" }, [
+  return _c("div", { staticClass: "comment mb-3" }, [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
         _c("div", { staticClass: "row align-items-center" }, [
@@ -37527,16 +37533,19 @@ var render = function() {
       _c("h2", [_vm._v("Comments")]),
       _vm._v(" "),
       _vm.can("create_comment")
-        ? _c(
-            "div",
-            { staticClass: "add-comment-form mb-4" },
-            [
-              _vm._l(_vm.errors, function(error, index) {
-                return _c("error", { key: index, attrs: { message: error } })
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-10" }, [
+        ? _c("div", { staticClass: "add-comment-form mb-4" }, [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-10" },
+                [
+                  _vm._l(_vm.errors, function(error, index) {
+                    return _c("error", {
+                      key: index,
+                      attrs: { message: error }
+                    })
+                  }),
+                  _vm._v(" "),
                   _c("textarea", {
                     directives: [
                       {
@@ -37570,17 +37579,21 @@ var render = function() {
                     },
                     [_vm._v("Add")]
                   )
-                ])
-              ])
-            ],
-            2
-          )
+                ],
+                2
+              )
+            ])
+          ])
         : _vm._e(),
       _vm._v(" "),
-      !_vm.comments.length
+      _vm.fetching
         ? _c("div", { staticClass: "d-flex justify-content-center" }, [
             _vm._m(0)
           ])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.fetching && !_vm.comments.length
+        ? _c("p", [_vm._v("There are no comments to display.")])
         : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.comments, function(comment) {
