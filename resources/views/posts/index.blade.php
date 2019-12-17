@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -13,22 +13,26 @@
                 <h1>Posts</h1>
 
                 @can('create', 'App\Post')
-                    <div>
-                        <a href="{{ route('posts.create') }}" class="btn btn-primary">Create post</a>
-                    </div>
+                    <a href="{{ route('posts.create') }}" class="btn btn-primary">Create post</a>
                 @endcan
 
-                @foreach ($posts as $post)
-                    <div class="card">
-                        <div class="card-header">
-                            <a href="{{ route('posts.show', ['post' => $post]) }}">{{ $post->title }}</a>
-                            <span>{{ $post->created_at }}</span>
+                <div class="row">
+                    @foreach ($posts as $post)
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}">
+
+                                <div class="card-body">
+                                    <p class="card-title h5">
+                                        <a class="stretched-link" href="{{ route('posts.show', ['post' => $post]) }}">{{ $post->title }}</a>
+                                    </p>
+                                    <p class="card-subtitle mb-2 text-muted">{{ $post->created_at->format('j F Y') }}</p>
+                                    <p class="card-text">{{ $post->teaser }}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <p>{{ $post->body }}</p>
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
 
                 {{ $posts->links() }}
             </div>

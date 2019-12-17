@@ -32,7 +32,10 @@ class Role extends Model
     }
 
     /**
-     * todo: add comment.
+     * Assign the role a permission.
+     *
+     * @param string $permission
+     * @return Permission
      */
     public function givePermissionTo($permission)
     {

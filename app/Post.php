@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -33,13 +34,12 @@ class Post extends Model
     }
 
     /**
-     * Get the formatted post creation date.
+     * Get the formatted post body teaser.
      *
-     * @param  string  $value
      * @return string
      */
-    public function getCreatedAtAttribute($value)
+    public function getTeaserAttribute()
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('j F Y H:i');
+        return Str::words($this->body, 15);
     }
 }

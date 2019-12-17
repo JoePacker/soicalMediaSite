@@ -93,7 +93,10 @@ class User extends Authenticatable
     }
 
     /**
-     * todo: add comment.
+     * Check that the user has a role.
+     *
+     * @param string|Role $role
+     * @return bool
      */
     public function hasRole($role)
     {
@@ -105,7 +108,10 @@ class User extends Authenticatable
     }
 
     /**
-     * todo: add comment.
+     * Assign a role to the user.
+     *
+     * @param string $role
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function assignRole($role)
     {
@@ -115,7 +121,10 @@ class User extends Authenticatable
     }
 
     /**
-     * todo: add comment.
+     * Check that the user has a permission.
+     *
+     * @param string|Permission $permission
+     * @return bool
      */
     public function hasPermission($permission)
     {
