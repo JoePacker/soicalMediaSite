@@ -20,7 +20,9 @@
                     @foreach ($posts as $post)
                         <div class="col-md-4">
                             <div class="card mb-4">
-                                <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}">
+                                @isset($post->image)
+                                    <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}">
+                                @endisset
 
                                 <div class="card-body">
                                     <p class="card-title h5">
