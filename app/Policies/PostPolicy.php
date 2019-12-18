@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Post;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class PostPolicy
 {
@@ -32,7 +33,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        if ($user->hasPermission('create_post')) {
+        if (Gate::allows('create_post')) {
             return true;
         }
     }
@@ -46,11 +47,11 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        if ($user->hasPermission('edit_any_post')) {
+        if (Gate::allows('edit_any_post')) {
             return true;
         }
 
-        if ($user->hasPermission('edit_own_post') && $user->id === $post->user_id) {
+        if (Gate::allows('edit_own_post') && $user->id === $post->user_id) {
             return true;
         }
     }
@@ -64,11 +65,11 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        if ($user->hasPermission('delete_any_post')) {
+        if (Gate::allows('delete_any_post')) {
             return true;
         }
 
-        if ($user->hasPermission('delete_own_post') && $user->id === $post->user_id) {
+        if (Gate::allows('delete_own_post') && $user->id === $post->user_id) {
             return true;
         }
     }

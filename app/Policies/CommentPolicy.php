@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Comment;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class CommentPolicy
 {
@@ -32,7 +33,7 @@ class CommentPolicy
      */
     public function create(User $user)
     {
-        if ($user->hasPermission('create_comment')) {
+        if (Gate::allows('create_comment')) {
             return true;
         }
     }
@@ -46,11 +47,11 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment)
     {
-        if ($user->hasPermission('edit_any_comment')) {
+        if (Gate::allows('edit_any_comment')) {
             return true;
         }
 
-        if ($user->hasPermission('edit_own_comment') && $user->id === $comment->user_id) {
+        if (Gate::allows('edit_own_comment') && $user->id === $comment->user_id) {
             return true;
         }
     }
@@ -64,11 +65,11 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        if ($user->hasPermission('delete_any_comment')) {
+        if (Gate::allows('delete_any_comment')) {
             return true;
         }
 
-        if ($user->hasPermission('delete_own_comment') && $user->id === $comment->user_id) {
+        if (Gate::allows('delete_own_comment') && $user->id === $comment->user_id) {
             return true;
         }
     }

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class UserPolicy
 {
@@ -31,7 +32,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->hasPermission('manage_users')) {
+        if (Gate::allows('manage_users')) {
             return true;
         }
     }
@@ -45,7 +46,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        if ($user->hasPermission('delete_any_user')) {
+        if (Gate::allows('delete_any_user')) {
             return true;
         }
     }

@@ -119,19 +119,4 @@ class User extends Authenticatable
            Role::whereName($role)->firstOrFail()
         );
     }
-
-    /**
-     * Check that the user has a permission.
-     *
-     * @param string|Permission $permission
-     * @return bool
-     */
-    public function hasPermission($permission)
-    {
-        if (is_string($permission)) {
-            $permission = Permission::whereName($permission)->firstOrFail();
-        }
-
-        return $this->hasRole($permission->roles);
-    }
 }

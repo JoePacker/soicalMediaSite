@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Profile;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class ProfilePolicy
 {
@@ -33,11 +34,11 @@ class ProfilePolicy
      */
     public function update(User $user, Profile $profile)
     {
-        if ($user->hasPermission('edit_any_profile')) {
+        if (Gate::allows('edit_any_profile')) {
             return true;
         }
 
-        if ($user->hasPermission('edit_own_profile') && $user->id === $profile->user_id) {
+        if (Gate::allows('edit_own_profile') && $user->id === $profile->user_id) {
             return true;
         }
     }
